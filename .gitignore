@@ -28,3 +28,6 @@ pip-log.txt
 
 #Vim swap files
 *.sw[op]
+
+#Sphinx build directory
+docs/_build
