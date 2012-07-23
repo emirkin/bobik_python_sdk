@@ -39,6 +39,18 @@ Here's a quick example to get you started
 
 	bobik_api.scrape(query, success_handler, error_handler)
 
+Documentation
+*************
+
+Documentation can be found at `place link to generated docs here`_.
+
+The docs are generated with `Sphinx <http://sphinx.pocoo.org/>`_. To generate
+the docs, enter the ``docs`` folder and run::
+
+    $ make html
+
+The documentation will be generated inside the ``_build`` directory.
+
 Contributing
 ************
 
