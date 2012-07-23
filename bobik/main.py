@@ -73,15 +73,17 @@ class Bobik:
         self.wait_and_collect_results(json_obj['job'], success_handler)
         return json_obj['job']
 
-    def __check_progress(self, response):
-        json_obj = json.loads(response)
-        self.logger.info('Progress - %d%%', float(json_obj['progress']) * 100)
-        if float(json_obj['progress']) < 1.0:
-            return (False, json_obj)
-        else:
-            return (True, json_obj)
-
     def wait_and_collect_results(self, job_id, handler):
+        """
+        Queries Bobik to see if a given job was finished. Normally, you don't
+        have to call this function directly, as the SDK will do it for you. It
+        will wait until the job has finished and will call the handler on the
+        response when the job is done.
+
+        :param job_id: The job ID that was received from Bobik
+        :param handler: The function to call when the job is finished
+        :rtype: The same type as the ``handler`` function return type
+        """
         self.logger.info('Waiting for job %s to complete', job_id)
         json_obj = {}
         json_obj['job'] = job_id
@@ -94,3 +96,20 @@ class Bobik:
             job_done, response_json = self.__check_progress(response)
 
         return handler(response)
+
+    def __check_progress(self, response):
+        """
+        Checks the response from Bobik to see if the job was completed.
+        The returned data is a tuple (bool, dict), where the first value
+        indicates whether the job was completed, and the second is the
+        parsed JSON response.
+
+        :param response: The response data from Bobik
+        :rtype: tuple
+        """
+        json_obj = json.loads(response)
+        self.logger.info('Progress - %d%%', float(json_obj['progress']) * 100)
+        if float(json_obj['progress']) < 1.0:
+            return (False, json_obj)
+        else:
+            return (True, json_obj)
