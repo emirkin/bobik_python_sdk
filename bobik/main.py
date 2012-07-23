@@ -95,7 +95,7 @@ class Bobik:
             response = self.call_api(json_obj, 'GET')
             job_done, response_json = self.__check_progress(response)
 
-        return handler(response)
+        return handler(response_json)
 
     def __check_progress(self, response):
         """
