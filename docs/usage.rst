@@ -95,3 +95,29 @@ API, and wait for both of them::
 
 .. _Eventlet: http://eventlet.net/
 .. _Eventlet documentation: http://eventlet.net/doc/index.html
+
+Debug output
+************
+
+The constructor for the :class:`bobik.Bobik` class accepts three arguments:
+
+* Query parameters;
+* A :class:`logging.Logger` instance;
+* A boolean indicating whether to give debug output.
+
+By default, when using debug (when ``debug=True`` is given) output, messages like the following will be printed to ``stderr``::
+
+	INFO:bobik.main:Waiting for job 500d95aa192f3c713b000040 to complete
+	INFO:bobik.main:Progress - 0%
+	INFO:bobik.main:Progress - 100%
+
+To instantiate the class using debug output, you can write::
+
+	bobik_api = Bobik(YOUR_AUTH_TOKEN, debug=True)
+
+To pass a custom :class:`logging.Logger` instance, use::
+
+	bobik_api = Bobik(YOUR_AUTH_TOKEN, logger=custom_logger)
+
+Passing both ``logger`` and ``debug`` values causes no changes to the logger
+passed in.
