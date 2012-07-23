@@ -1,4 +1,4 @@
-from distutils.code import setup
+from distutils.core import setup
 
 setup(
 	name='Bobik Python SDK',
