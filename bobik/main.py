@@ -75,7 +75,7 @@ class Bobik:
 
     def __check_progress(self, response):
         json_obj = json.loads(response)
-        self.logger.info('Progress - %d%%', (float(json_obj['progress']) * 100))
+        self.logger.info('Progress - %d%%', float(json_obj['progress']) * 100)
         if float(json_obj['progress']) < 1.0:
             return (False, json_obj)
         else:
@@ -86,10 +86,11 @@ class Bobik:
         json_obj = {}
         json_obj['job'] = job_id
         response = self.call_api(json_obj, 'GET')
-        job_done,response_json = self.__check_progress(response)
+        job_done, response_json = self.__check_progress(response)
         while not job_done:
-            eventlet.sleep(float(response_json['estimated_time_left_ms']) / 1000.0)
+            time_left_ms = float(response_json['estimated_time_left_ms'])
+            eventlet.sleep(time_left_ms / 1000.0)
             response = self.call_api(json_obj, 'GET')
-            job_done,response_json = self.__check_progress(response)
+            job_done, response_json = self.__check_progress(response)
 
         return handler(response)
