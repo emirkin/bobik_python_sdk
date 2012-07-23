@@ -15,7 +15,7 @@ Using
 
 Here's a quick example to get you started
 
-.. code-block: python
+.. code-block:: python
 
 	from bobik import Bobik
 	bobik_api = Bobik(YOUR_AUTH_TOKEN)
