@@ -13,7 +13,9 @@ You can install the SDK using ``pip`` directly from this repository::
 Using
 *****
 
-Here's a quick example to get you started::
+Here's a quick example to get you started
+
+.. code-block: python
 
 	from bobik import Bobik
 	bobik_api = Bobik(YOUR_AUTH_TOKEN)
