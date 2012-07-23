@@ -56,18 +56,19 @@ class Bobik:
 
     def scrape(self, query, success_handler, error_handler):
         """
-        Submits a new job for Bobik.
+        Submits a new job for Bobik. Returns the job ID.
 
         :param query: the query dict used for the request
         :param success_handler: function to be called when \
         the the scraping process succesfully finishes
         :param error_handler: function to be called if there were any errors \
         while submitting the request
+        :rtype: string
         """
         response = self.call_api(query, 'POST')
         json_obj = json.loads(response)
         if 'errors' in json_obj:
-            return error_handler('error')
+            return error_handler(json_obj['errors'])
 
         self.wait_and_collect_results(json_obj['job'], success_handler)
         return json_obj['job']
@@ -85,10 +86,10 @@ class Bobik:
         json_obj = {}
         json_obj['job'] = job_id
         response = self.call_api(json_obj, 'GET')
-        job_done,response_json = self.check_progress(response)
+        job_done,response_json = self.__check_progress(response)
         while not job_done:
             eventlet.sleep(float(response_json['estimated_time_left_ms']) / 1000.0)
             response = self.call_api(json_obj, 'GET')
-            job_done,response_json = self.check_progress(response)
+            job_done,response_json = self.__check_progress(response)
 
         return handler(response)
