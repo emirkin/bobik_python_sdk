@@ -25,3 +25,9 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+
+#Vim swap files
+*.sw[op]
+
+#Sphinx build directory
+docs/_build
