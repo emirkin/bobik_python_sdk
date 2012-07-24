@@ -18,7 +18,7 @@ as following::
 	def error_handler(error_list):
 		print response
 
-	bobik_api = Bobik(YOUR_AUTH_TOKEN) #Replace with your own token
+	bobik_api = Bobik(YOUR_AUTH_TOKEN, debug=True) #Replace with your own token
 
 	query = {
 		'urls' : 'http://www.dmoz.org/',
@@ -74,7 +74,7 @@ API, and wait for both of them::
 	def error_handler(error_list):
 		print response
 
-	bobik_api = Bobik(YOUR_AUTH_TOKEN) #Replace with your own token
+	bobik_api = Bobik(YOUR_AUTH_TOKEN, debug=True) #Replace with your own token
 
 	query1 = {
 		'urls' : 'http://www.dmoz.org/',
