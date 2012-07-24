@@ -40,15 +40,21 @@ class Bobik:
         must be ``"GET"`` or ``"POST"``
         :rtype: string
         """
+
+        #make sure that parameters that are lists have a "[]" appended
+        for key in query:
+            if isinstance(query[key], list):
+                query[key + '[]'] = query.pop(key)
+
         query['auth_token'] = self.auth_token
         request = None
         if http_method == 'GET':
-            data = urllib.urlencode(query)
+            data = urllib.urlencode(query, True)
             url = Bobik.BOBIK_URL + '?' + data
             request = urllib2.Request(url, None)
         else:
             url = Bobik.BOBIK_URL
-            request = urllib2.Request(url, urllib.urlencode(query))
+            request = urllib2.Request(url, urllib.urlencode(query, True))
 
         request.add_header('Accept', 'application/json')
         response = urllib2.urlopen(request)
