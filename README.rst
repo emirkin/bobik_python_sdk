@@ -6,7 +6,11 @@ This is a community-supported Bobik SDK for web scraping in Python.
 Installing
 **********
 
-You can install the SDK using ``pip`` directly from this repository::
+You can install the SDK using ``pip``::
+
+    pip install bobik_python_sdk
+
+If you want to install the latest development version, use::
 
 	pip install -e git+https://github.com/emirkin/bobik_python_sdk#egg=bobik_python_sdk
 
