@@ -18,7 +18,7 @@ as following::
 	def error_handler(error_list):
 		print response
 
-	bobik_api = Bobik(YOUR_AUTH_TOKEN) #Replace with your own token
+	bobik_api = Bobik(YOUR_AUTH_TOKEN, debug=True) #Replace with your own token
 
 	query = {
 		'urls' : 'http://www.dmoz.org/',
@@ -57,16 +57,18 @@ callbacks for your request, these are the two functions you should pass:
 Concurrent queries
 ******************
 
-Bobik Python SDK itself is built using the `Eventlet`_ library, which allows us
-to make concurrent requests to the API easily. For tips for better management
-of multiple requests, see the `Eventlet documentation`_.
+If you have the need to create multiple requests at once, one such possibility
+is by using the `Eventlet`_ library, which allows us to make concurrent
+requests easily. For tips on better management of multiple requests, see the
+`Eventlet documentation`_.
 
 The example below shows a way to create two concurrent requests to the Bobik
 API, and wait for both of them::
 
-	from bobik import Bobik
+	#import eventlet as soon as possible
 	import eventlet
 	eventlet.monkey_patch()
+	from bobik import Bobik
 
 	def success_handler(response):
 		print response
@@ -74,7 +76,7 @@ API, and wait for both of them::
 	def error_handler(error_list):
 		print response
 
-	bobik_api = Bobik(YOUR_AUTH_TOKEN) #Replace with your own token
+	bobik_api = Bobik(YOUR_AUTH_TOKEN, debug=True) #Replace with your own token
 
 	query1 = {
 		'urls' : 'http://www.dmoz.org/',

@@ -1,6 +1,6 @@
 from distutils.core import setup
 
-requirements = ['eventlet>=0.9']
+requirements = ['requests>=0.12']
 
 setup(
 	name='bobik_python_sdk',

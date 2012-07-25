@@ -2,9 +2,9 @@
 import urllib
 import urllib2
 import json
-import eventlet
-eventlet.monkey_patch()
 import logging
+import time
+import requests
 
 
 class Bobik:
@@ -40,19 +40,19 @@ class Bobik:
         must be ``"GET"`` or ``"POST"``
         :rtype: string
         """
-        query['auth_token'] = self.auth_token
-        request = None
-        if http_method == 'GET':
-            data = urllib.urlencode(query)
-            url = Bobik.BOBIK_URL + '?' + data
-            request = urllib2.Request(url, None)
-        else:
-            url = Bobik.BOBIK_URL
-            request = urllib2.Request(url, urllib.urlencode(query))
 
-        request.add_header('Accept', 'application/json')
-        response = urllib2.urlopen(request)
-        return response.read()
+        query['auth_token'] = self.auth_token
+        headers = {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        }
+        data = json.dumps(query)
+        if http_method == 'GET':
+            r = requests.get(Bobik.BOBIK_URL, data=data, headers=headers)
+        else:
+            r = requests.post(Bobik.BOBIK_URL, data=data, headers=headers)
+
+        return r.json
 
     def scrape(self, query, success_handler, error_handler):
         """
@@ -65,13 +65,12 @@ class Bobik:
         while submitting the request
         :rtype: string
         """
-        response = self.call_api(query, 'POST')
-        json_obj = json.loads(response)
-        if 'errors' in json_obj:
-            return error_handler(json_obj['errors'])
+        response_json = self.call_api(query, 'POST')
+        if 'errors' in response_json:
+            return error_handler(response_json['errors'])
 
-        self.wait_and_collect_results(json_obj['job'], success_handler)
-        return json_obj['job']
+        self.wait_and_collect_results(response_json['job'], success_handler)
+        return response_json['job']
 
     def wait_and_collect_results(self, job_id, handler):
         """
@@ -85,19 +84,19 @@ class Bobik:
         :rtype: The same type as the ``handler`` function return type
         """
         self.logger.info('Waiting for job %s to complete', job_id)
-        json_obj = {}
-        json_obj['job'] = job_id
-        response = self.call_api(json_obj, 'GET')
-        job_done, response_json = self.__check_progress(response)
+        query = {}
+        query['job'] = job_id
+        response_json = self.call_api(query, 'GET')
+        job_done = self.__check_progress(response_json)
         while not job_done:
             time_left_ms = float(response_json['estimated_time_left_ms'])
-            eventlet.sleep(time_left_ms / 1000.0)
-            response = self.call_api(json_obj, 'GET')
-            job_done, response_json = self.__check_progress(response)
+            time.sleep(time_left_ms / 1000.0)
+            response_json = self.call_api(query, 'GET')
+            job_done = self.__check_progress(response_json)
 
         return handler(response_json)
 
-    def __check_progress(self, response):
+    def __check_progress(self, response_json):
         """
         Checks the response from Bobik to see if the job was completed.
         The returned data is a tuple (bool, dict), where the first value
@@ -107,9 +106,9 @@ class Bobik:
         :param response: The response data from Bobik
         :rtype: tuple
         """
-        json_obj = json.loads(response)
-        self.logger.info('Progress - %d%%', float(json_obj['progress']) * 100)
-        if float(json_obj['progress']) < 1.0:
-            return (False, json_obj)
+        progress = float(response_json['progress'])
+        self.logger.info('Progress - %d%%', progress * 100)
+        if progress < 1.0:
+            return False
         else:
-            return (True, json_obj)
+            return True

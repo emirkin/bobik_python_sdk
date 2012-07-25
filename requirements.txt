@@ -1,1 +1,1 @@
-eventlet>=0.9
+requests>=0.12

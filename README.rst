@@ -18,7 +18,7 @@ Here's a quick example to get you started
 .. code-block:: python
 
 	from bobik import Bobik
-	bobik_api = Bobik(YOUR_AUTH_TOKEN)
+	bobik_api = Bobik(YOUR_AUTH_TOKEN, debug=True)
 
 	def success_handler(response):
 		for site in response['results']:
