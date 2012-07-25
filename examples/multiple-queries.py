@@ -9,8 +9,8 @@ def error_handler(error_list):
 bobik_api = Bobik(YOUR_AUTH_TOKEN, debug=True) #Replace with your own token
 
 query = {
-	'urls' : ['http://www.dmoz.org/', 'http://www.dmoz.org/Computers/', 'http://www.dmoz.org/Computers/Programming/'],
-	'queries' : '//div//span/a/text()'
+	'urls' : ['9gag.com', 'xkcd.com', 'www.amazingsuperpowers.com'],
+	'queries' : ['//img/@src', 'return document.title', 'return $("script").length']
 }
 
 bobik_api.scrape(query, success_handler, error_handler)

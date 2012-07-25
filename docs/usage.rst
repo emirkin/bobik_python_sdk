@@ -8,30 +8,22 @@ In order to use Bobik, first be sure to :doc:`install </installation>` it.
 
 Everything is accomplished through the :class:`bobik.Bobik` class. It exposes
 a few methods that interact with the `Bobik API`_. A simple use of the API is
-as following::
+as following:
 
-	from bobik import Bobik
-
-	def success_handler(response):
-		print response
-
-	def error_handler(error_list):
-		print response
-
-	bobik_api = Bobik(YOUR_AUTH_TOKEN, debug=True) #Replace with your own token
-
-	query = {
-		'urls' : 'http://www.dmoz.org/',
-		'queries' : '//div//span/a/text()'
-	}
+.. literalinclude:: ../examples/simple.py
+   :language: python
 	
-	bobik_api.scrape(query, success_handler, error_handler)
-	
-This example lists the main categories within the `DMOZ`_ directory listing.
-The ``key : value`` pairs in the ``query`` variable may be any pairs listed
-within the `function reference <http://usebobik.com/api/docs#func_ref>`_,
-except for the ``auth_token`` parameter, which is added automatically.
+This example lists the categories of a few pages within the `DMOZ`_ directory
+listing.  The ``key : value`` pairs in the ``query`` variable may be any pairs
+listed within the `function reference
+<http://usebobik.com/api/docs#func_ref>`_, except for the ``auth_token``
+parameter, which is added automatically.
 
+Note that the URLs passed in the ``url`` query parameter don't have to be of
+the same domain, and you can also have multiple ``queries`` per request as well, as the next example shows:
+
+.. literalinclude:: ../examples/multiple-queries.py
+   :language: python
 
 .. _Bobik API: http://usebobik.com/api/docs
 .. _DMOZ: http://www.dmoz.org
@@ -63,37 +55,10 @@ requests easily. For tips on better management of multiple requests, see the
 `Eventlet documentation`_.
 
 The example below shows a way to create two concurrent requests to the Bobik
-API, and wait for both of them::
+API, and wait for both of them:
 
-	#import eventlet as soon as possible
-	import eventlet
-	eventlet.monkey_patch()
-	from bobik import Bobik
-
-	def success_handler(response):
-		print response
-
-	def error_handler(error_list):
-		print response
-
-	bobik_api = Bobik(YOUR_AUTH_TOKEN, debug=True) #Replace with your own token
-
-	query1 = {
-		'urls' : 'http://www.dmoz.org/',
-		'queries' : '//div//span/a/text()'
-	}
-	
-	thread1 = eventlet.spawn(bobik_api.scrape, query1, success_handler, error_handler)
-
-	query2 = {
-		'urls' : 'http://www.dmoz.org/Computers/Computer_Science/Research_Institutes/',
-		'queries' : '//ul[@class="directory-url"]/li/a/@href'
-	}
-
-	thread2 = eventlet.spawn(bobik_api.scrape, query2, success_handler, error_handler)
-
-	thread1.wait()
-	thread2.wait()
+.. literalinclude:: ../examples/concurrent.py
+   :language: python
 
 .. _Eventlet: http://eventlet.net/
 .. _Eventlet documentation: http://eventlet.net/doc/index.html
