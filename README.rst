@@ -42,7 +42,7 @@ Here's a quick example to get you started
 Documentation
 *************
 
-Documentation can be found at `place link to generated docs here`_.
+Documentation can be found at http://usebobik.com/sdk.
 
 The docs are generated with `Sphinx <http://sphinx.pocoo.org/>`_. To generate
 the docs, enter the ``docs`` folder and run::
