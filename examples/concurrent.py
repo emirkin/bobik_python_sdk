@@ -1,6 +1,7 @@
-from bobik import Bobik
+#import eventlet as soon as possible
 import eventlet
 eventlet.monkey_patch()
+from bobik import Bobik
 
 def success_handler(response):
         print response

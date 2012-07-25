@@ -65,9 +65,10 @@ requests easily. For tips on better management of multiple requests, see the
 The example below shows a way to create two concurrent requests to the Bobik
 API, and wait for both of them::
 
-	from bobik import Bobik
+	#import eventlet as soon as possible
 	import eventlet
 	eventlet.monkey_patch()
+	from bobik import Bobik
 
 	def success_handler(response):
 		print response
