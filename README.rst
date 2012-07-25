@@ -42,14 +42,14 @@ Here's a quick example to get you started
 Documentation
 *************
 
-Documentation can be found at `place link to generated docs here`_.
+Documentation can be found at http://usebobik.com/sdk/python/index.html.
 
 The docs are generated with `Sphinx <http://sphinx.pocoo.org/>`_. To generate
 the docs, enter the ``docs`` folder and run::
 
     $ make html
 
-The documentation will be generated inside the ``_build`` directory.
+The documentation will be generated inside the ``_build/html`` directory.
 
 Contributing
 ************
