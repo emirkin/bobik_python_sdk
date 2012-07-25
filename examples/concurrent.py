@@ -4,23 +4,23 @@ eventlet.monkey_patch()
 from bobik import Bobik
 
 def success_handler(response):
-        print response
+	print response
 
 def error_handler(error_list):
-        print error_list
+	print error_list
 
 bobik_api = Bobik(YOUR_AUTH_TOKEN, debug=True) #Replace with your own token
 
 query1 = {
-        'urls' : 'http://www.dmoz.org/',
-        'queries' : '//div//span/a/text()'
+	'urls' : ['dmoz.org', 'google.com', 'amazon.com', 'yahoo.com'],
+	'queries' : ['return document.title', 'return $("script").length']
 }
 
 thread1 = eventlet.spawn(bobik_api.scrape, query1, success_handler, error_handler)
 
 query2 = {
-        'urls' : 'http://www.dmoz.org/Computers/Computer_Science/Research_Institutes/',
-        'queries' : '//ul[@class="directory-url"]/li/a/@href'
+	'urls' : ['hackaday.com', 'makezine.com', 'http://hakin9.org/'],
+	'queries' : ['//img/@src', '//a/@href', 'return document.title']
 }
 
 thread2 = eventlet.spawn(bobik_api.scrape, query2, success_handler, error_handler)
