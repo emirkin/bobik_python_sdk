@@ -52,7 +52,7 @@ class Bobik:
         else:
             r = requests.post(Bobik.BOBIK_URL, data=data, headers=headers)
 
-        return r.json
+        return r.json()
 
     def scrape(self, query, success_handler, error_handler):
         """
